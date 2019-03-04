@@ -1,7 +1,7 @@
 {
-    "name": "vue-unused-css",
-    "displayName": "vue-unused-css",
-    "description": "show unused scss in vue project",
+    "name": "vue-unused-css-selector",
+    "displayName": "vue-unused-css-selector",
+    "description": "show unused scss selector in vue project",
     "version": "0.0.1",
     "publisher": "mengfanliao",
     "engines": {
@@ -11,16 +11,73 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.sayHello",
+        "onView:cssSelector"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "vue unused css setting",
+            "properties": {
+                "vue-unused-css.include": {
+                    "type": "string",
+                    "default": "src",
+                    "description": "directories which contain vue and css files"
+                },
+                "vue-unused-css.exclude": {
+                    "type": "array",
+                    "default": [
+                        "node_modules"
+                    ],
+                    "description": "exclued directories"
+                },
+                "vue-unused-css.ignore-selectors": {
+                    "type": "array",
+                    "default": [
+                        "^\\.fa$",
+                        "^\\.fa-",
+                        "^\\.el-"
+                    ]
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "css-selector-explorer",
+                    "title": "css selector explorer",
+                    "icon": "resources/dep.svg"
+                }
+            ]
+        },
+        "views": {
+            "css-selector-explorer": [
+                {
+                    "id": "cssSelector",
+                    "name": "css selector"
+                }
+            ]
+        },
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "cssSelector.refresh",
+                "title": "refresh",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
             }
-        ]
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "cssSelector.refresh",
+                    "when": "view == cssSelector",
+                    "group": "navigation"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -35,5 +92,10 @@
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "acorn": "^5.7.1",
+        "he": "^1.1.1",
+        "postcss-scss": "^2.0.0"
     }
 }
